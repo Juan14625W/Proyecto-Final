@@ -1,0 +1,9 @@
+{
+    "jugador": {
+        "nombre": "J_Xp",
+        "nivel": 2,
+        "xp": 10,
+        "energia": 100
+    },
+    "habitos": []
+}

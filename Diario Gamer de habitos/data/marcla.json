@@ -1,0 +1,14 @@
+{
+    "jugador": {
+        "nombre": "marcla",
+        "nivel": 1,
+        "xp": 20,
+        "energia": 100
+    },
+    "habitos": [
+        {
+            "nombre": "Comer a tiempo",
+            "completado": false
+        }
+    ]
+}
