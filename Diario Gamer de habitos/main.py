@@ -6,7 +6,7 @@ Punto de entrada del Diario Gamer de Hábitos.
 from data_manager import load_progress, save_progress, list_profiles
 import logic
 
-print("👉 LOGIC.PY CARGADO DESDE:", logic.__file__)   # <-- AGREGA ESTO AQUÍ
+print("👉 LOGIC.PY CARGADO DESDE:", logic.__file__)
 
 def mostrar_menu():
     print("\n==============================")
@@ -18,8 +18,10 @@ def mostrar_menu():
     print("4. Completar hábito")
     print("5. Reiniciar hábitos del día")
     print("6. Guardar progreso")
-    print("7. Cambiar de jugador")
-    print("8. Salir")
+    print("7. Registrar historial del día")
+    print("8. Ver el máximo XP del mes")
+    print("9. Cambiar de jugador")
+    print("10. Salir")
     print("==============================")
 
 
@@ -68,25 +70,42 @@ def main():
                 try:
                     numero = int(input("Número del hábito a completar: "))
                     data = logic.completar_habito(data, numero)
+                    logic.registrar_historial(data)
                 except ValueError:
                     print("Debes ingresar un número válido.")
 
         # ------------------- OPCIÓN 5 -------------------
         elif opcion == "5":
             data = logic.reiniciar_habitos(data)
+            logic.registrar_historial(data)
 
         # ------------------- OPCIÓN 6 -------------------
         elif opcion == "6":
             save_progress(nombre, data)
+            logic.registrar_historial(data)
             print("Progreso guardado correctamente.")
 
         # ------------------- OPCIÓN 7 -------------------
         elif opcion == "7":
+            data = logic.registrar_historial(data)
             save_progress(nombre, data)
-            nombre, data = seleccionar_jugador()
+            print("Historial del día registrado.")
 
         # ------------------- OPCIÓN 8 -------------------
         elif opcion == "8":
+            maximo = logic.maximo_xp_mes(data)
+            if maximo is None:
+                print("No hay datos registrados este mes.")
+            else:
+                print(f"📅 Máximo XP en este mes: {maximo}")
+
+        # ------------------- OPCIÓN 9 -------------------
+        elif opcion == "9":
+            save_progress(nombre, data)
+            nombre, data = seleccionar_jugador()
+
+        # ------------------- OPCIÓN 10 -------------------
+        elif opcion == "10":
             save_progress(nombre, data)
             print("\n Gracias por jugar. ¡Sigue subiendo de nivel en la vida real!")
             break

@@ -4,6 +4,9 @@ Lógica principal del Diario Gamer de Hábitos.
 Maneja experiencia, niveles, energía y hábitos.
 """
 
+from datetime import date, datetime
+
+
 # -----------------------------
 # SISTEMA DE XP Y NIVELES
 # -----------------------------
@@ -17,7 +20,7 @@ def agregar_experiencia(data, xp_ganada):
     data["jugador"]["xp"] += xp_ganada
     data["jugador"]["nivel"] = calcular_nivel(data["jugador"]["xp"])
 
-    # Recupera energía
+    # Recuperación de energía
     data["jugador"]["energia"] += 5
     if data["jugador"]["energia"] > 100:
         data["jugador"]["energia"] = 100
@@ -71,6 +74,51 @@ def reiniciar_habitos(data):
         h["completado"] = False
     print("🌞 Nuevo día, hábitos reiniciados.")
     return data
+
+
+# -----------------------------
+# HISTORIAL
+# -----------------------------
+
+def registrar_historial(data):
+    """
+    Guarda una entrada diaria en el historial.
+    """
+    hoy = str(date.today())
+
+    entrada = {
+        "fecha": hoy,
+        "xp": data["jugador"]["xp"],
+        "nivel": data["jugador"]["nivel"],
+        "energia": data["jugador"]["energia"]
+    }
+
+    data["historial"].append(entrada)
+    return data
+
+
+def maximo_xp_mes(data):
+    """
+    Devuelve el máximo XP registrado en el mes actual.
+    """
+    if "historial" not in data or not data["historial"]:
+        return None
+
+    hoy = datetime.today()
+    registros_mes = []
+
+    for h in data["historial"]:
+        try:
+            fecha = datetime.fromisoformat(h["fecha"])
+            if fecha.month == hoy.month and fecha.year == hoy.year:
+                registros_mes.append(h["xp"])
+        except:
+            pass
+
+    if not registros_mes:
+        return None
+
+    return max(registros_mes)
 
 
 # -----------------------------
